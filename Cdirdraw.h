@@ -9,7 +9,7 @@
 #include "cdib.h"
 #include <ddraw.h>
 
-const BACKBUFFERNUM = 0;
+const int BACKBUFFERNUM = 0;
 
 class CDirDraw
 {

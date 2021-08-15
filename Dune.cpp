@@ -106,11 +106,11 @@ enum { Fremen, Harkonnen, Guild, Emperor, Atreides, BeneGesserit };
 enum { Storm, Spice, Bidding, Movement, Battle, Collection };
 
 // Constants
-const NUMFACTIONS = 6;
-const NUMSECTORS = 18;
-const NUMLEADERS = 5;
-const NUMTERRITORIES = 42;
-const NUMSPICELOCS = 15;
+const int NUMFACTIONS = 6;
+const int NUMSECTORS = 18;
+const int NUMLEADERS = 5;
+const int NUMTERRITORIES = 42;
+const int NUMSPICELOCS = 15;
 
 
 // Function prototypes
@@ -200,7 +200,7 @@ struct territory Territories [NUMTERRITORIES];
 struct treacheryCardType tCards[33];
 UINT tCardDeck[33];
 UINT tCardTop;
-UINT round;
+// UINT round;
 UINT stormSector;
 CMyDirDraw* pDirDraw;
 BOOL ddok;
@@ -972,7 +972,7 @@ void InitNewGame() {
 	Leaders[Harkonnen][4].strength = 1;
 
 	
-	for(i=0; i<8; i++) {  //zero out all treachery arrays
+	for(int i=0; i<8; i++) {  //zero out all treachery arrays
 		player.pTreacheryCards[i] = 0;
 		computer.pTreacheryCards[i] = 0;
 	}
@@ -1054,7 +1054,7 @@ void InitNewGame() {
 	StormLocation[17].x = 290;	StormLocation[17].y = 415;
 
     // Initialize the territories
-	for(i=0; i<NUMTERRITORIES; i++)
+	for(int i=0; i<NUMTERRITORIES; i++)
 		for(int j=0; j<6; j++) {
 		   Territories[i].sectors[j] = 99;
 		   Territories[i].troops[j].qty = 0;
@@ -1276,7 +1276,7 @@ void InitNewGame() {
 
 
 	// Initialize spiceDeck and related structures
-	for(i=0; i<NUMSPICELOCS; i++)
+	for(int i=0; i<NUMSPICELOCS; i++)
 		spiceInfo[i].sSpiceHere = FALSE;
 	
 	spiceInfo[0].sLocation.x = 165;	spiceInfo[0].sLocation.y = 268;
@@ -1354,7 +1354,7 @@ void InitNewGame() {
 	spiceInfo[14].sTerritoryID = 18;
 	spiceInfo[14].sSectorID = 11;
 
-	for(i=0; i<4; i++) {
+	for(int i=0; i<4; i++) {
 		tCards[i].tType = 1;  // projectile weapon
 		tCards[i].tID = i;
 	}
@@ -1362,7 +1362,7 @@ void InitNewGame() {
 	strcpy(tCards[1].name, "Slip tip\0");
 	strcpy(tCards[2].name, "Crysnife\0");
 	strcpy(tCards[3].name, "Maula Pistol\0");
-	for(i=4; i<8; i++) {
+	for(int i=4; i<8; i++) {
 		tCards[i].tType = 2; // poison weapon
 		tCards[i].tID = i-4;
 	}
@@ -1370,17 +1370,17 @@ void InitNewGame() {
 	strcpy(tCards[5].name,"Ellaca Drug\0");
 	strcpy(tCards[6].name,"Chaumas\0");
 	strcpy(tCards[7].name,"Chaumurky\0");
-    for(i=8; i<12; i++) {
+    for(int i=8; i<12; i++) {
 		tCards[i].tType = 3; // shield
 		tCards[i].tID = i-8;
 		strcpy(tCards[i].name, "Shield\0");
 	}
-	for(i=12; i<16; i++) {
+	for(int i=12; i<16; i++) {
 		tCards[i].tType = 4; // poison defense
 		tCards[i].tID = i-12;
 		strcpy(tCards[i].name, "Snooper\0");
 	}
-	for(i=16; i<21; i++) {
+	for(int i=16; i<21; i++) {
 		tCards[i].tType = 5; // worthless haha
 		tCards[i].tID = i-16;
 	}
@@ -1395,12 +1395,12 @@ void InitNewGame() {
 	tCards[22].tType = 6; 
 	tCards[22].tID = 1;
 	strcpy(tCards[22].name, "Truthtrance\0");
-    for(i=23; i<26; i++) {
+    for(int i=23; i<26; i++) {
 		tCards[i].tType = 7;  // Cheap Hero
 		tCards[i].tID = i-23;
 		strcpy(tCards[i].name, "Cheap Hero\0");
 	}
-	for(i=26; i<28; i++) {
+	for(int i=26; i<28; i++) {
 		tCards[i].tType = 8; // Holy Karma, Bat-man!
 		tCards[i].tID = i-26;
 		strcpy(tCards[i].name, "Karama\0");
@@ -1713,10 +1713,10 @@ void ShuffleSpiceDeck() {
 
 	for(UINT i=0; i<15; i++) 
 		spiceDeck[i] = i;   // Spice Territory Cards
-	for(i=15; i<21; i++)
+	for(int i=15; i<21; i++)
 		spiceDeck[i] = 99;  // Shai Halud cards
 
-	UINT temp, j, k;
+	UINT temp, i, j, k;
 
 	// Randomly swap two elements of the array 100 times.
 	for(k=0; k<300; k++) {
@@ -2010,20 +2010,20 @@ void SelectTraitors() {
 	}
 	
 	UINT i=0;
-	for(j=5; j<10; j++) {
+	for(int j=5; j<10; j++) {
 		TempLeaders[j].tFaction = Atreides;
 		TempLeaders[j].tLeader = i++;
 		TempLeaders[j].tPicked = FALSE;
 	}
-	for(i=0; i<2; i++) {
-		for(j=0; j<4; j++) {
+	for(int i=0; i<2; i++) {
+		for(int j=0; j<4; j++) {
 			tTraitors[i][j].tFaction=0;
 			tTraitors[i][j].tLeader = 0;
 		}
 	} 
 
 	i=0;
-	j=0;
+	UINT j=0;
 	UINT tselection;
     
 	while ((i<2) && (j<4)) {
@@ -2183,7 +2183,7 @@ void DetermineCards() {
 	for(UINT i=0; i<NUMFACTIONS; i++)
 		tBidCards[i] = 99;
 	
-	i=0;
+	UINT i=0;
 	if(player.pMaxTreachery > player.pTreacheryCount)
 		i++;
 	if(computer.pMaxTreachery > computer.pTreacheryCount)
@@ -2213,7 +2213,7 @@ int GetCard() {
 						tCardDeck[i] = 99;
 					}
 				}
-				for(j=0; j<computer.pTreacheryCount; j++) {
+				for(UINT j=0; j<computer.pTreacheryCount; j++) {
 					if(tCardDeck[i] == computer.pTreacheryCards[j]) {
 						tCardDeck[i] = 99;
 					}

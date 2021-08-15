@@ -84,6 +84,10 @@ UINT CDirSound::CreateSoundBuffer(CWave* pWave)
     // Calculate the next available buffer number.
     ++m_currentBufferNum;
 
+    #ifndef DSBCAPS_CTRLDEFAULT
+    #define DSBCAPS_CTRLDEFAULT (DSBCAPS_CTRLPAN | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLFREQUENCY)
+    #endif
+
     // Initialize the DSBUFFERDESC structure.
     LPWAVEFORMATEX pWaveFormat = pWave->GetWaveFormatPtr();
     memset(&dsBufferDesc, 0, sizeof(DSBUFFERDESC));
